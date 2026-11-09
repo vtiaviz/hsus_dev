@@ -5,7 +5,7 @@
 const SUS = (() => {
   // dados.js fica ao lado deste arquivo (currentScript só existe enquanto o script carrega)
   const URL_DADOS = new URL('dados.js', document.currentScript?.src || new URL('js/sus/', location.href)).href;
-  const DB_NOME = 'clinbot', DB_STORE = 'sus', DB_CHAVE = 'tabelas';
+  const DB_NOME = 'hsus', DB_STORE = 'sus', DB_CHAVE = 'tabelas';
 
   let carregando = null;
   let fonte = null;      // 'importado' | 'padrao'

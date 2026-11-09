@@ -1,7 +1,7 @@
 // Prontuário do paciente para impressão (ou "Salvar como PDF" no navegador).
 // Documento oficial: reproduz só o que foi registrado no sistema, em ordem cronológica, com data, hora e
 // identificação do profissional de cada registro (Res. CFM 1.638/2002 art. 5º; Res. COFEN 429/2012 e 545/2017).
-// Usa: clinbot.js, sus/sus.js (formatação de CID/procedimento) e admissao-campos.js.
+// Usa: hsus.js, sus/sus.js (formatação de CID/procedimento) e admissao-campos.js.
 
 // ---------- textos ----------
 const ORIGEM_LABEL = a => (a.origem === 'transferencia'

@@ -1,4 +1,4 @@
-// ClinBot — dados, regras e helpers compartilhados entre as páginas (entradas.html, observacao.html)
+// H-SUS — dados, regras e helpers compartilhados por todas as telas
 
 // ===== CONSTANTS =====
 // classificação de risco da triagem: nome = nível, label = cor
@@ -540,8 +540,8 @@ function autoriaExemplo(a) {
 // ===== ARMAZENAMENTO =====
 // os atendimentos ficam no localStorage, compartilhados entre as páginas deste navegador
 const Store = (() => {
-  // v4: autoria (profissional e horário) em cada registro; uma versão nova recomeça dos dados de exemplo
-  const KEY = 'clinbot:atendimentos:v4';
+  // a versão muda quando o formato dos dados muda; uma versão nova recomeça dos dados de exemplo
+  const KEY = 'hsus:atendimentos:v1';
   let memoria = null; // usado se o localStorage não estiver disponível
 
   function read() {
@@ -640,7 +640,7 @@ function seedHospital() {
   };
 }
 
-// Usuários de exemplo — todos com a senha de teste "clinbot@2026" (guardada só como hash).
+// Usuários de exemplo — todos com a senha de teste "hsus@2026" (guardada só como hash).
 // admin (Administrador) · alice (Recepção) · paulo.mendes e helena.rocha (Médico) · joana.lima (Enfermagem) · marta.souza (inativa)
 function seedProfissionais() {
   const p = (id, nome, login, cargo, cbo, nivel, salt, hash, extra = {}) =>
@@ -648,17 +648,17 @@ function seedProfissionais() {
   const conselho = (sigla, numero) => ({ conselho: sigla, conselhoNumero: numero, conselhoUF: 'PA' });
   return [
     p(1, 'Administrador do Sistema', 'admin', 'Administrador do sistema', '', 'administrador',
-      'a3e5b15419f4d287', '67d18615c74315d1619a0726871a6a6f596c96aa9da22972e82eab154270067d'),
+      'a3e5b15419f4d287', '6f2344ea8c96727d2941d65ec6c119d17bc4a5855685858339bfc67d3e5916a0'),
     p(2, 'Alice Lins', 'alice', 'Recepcionista', '422105', 'recepcao',
-      '45a4b88d5a149830', 'dc3ff68fa0c6709c59900341e9e1b5b2dd8053ddd5bf7d717503f4bbc09e6025', { cpf: '123.456.789-09' }),
+      '45a4b88d5a149830', '9ad49925df21c91f19dc0d162429b1e5bac266f19988e68b0399a32ef1ab1a00', { cpf: '123.456.789-09' }),
     p(3, 'Paulo Mendes', 'paulo.mendes', 'Médico clínico', '225125', 'medico',
-      '743f23ab4cdf34fd', 'e4f7bb5788bf3478165b792faaae1272a589895548491db4db6ad2ddeff219bc', { cns: '700 1234 5678 9012', ...conselho('CRM', '12345') }),
+      '743f23ab4cdf34fd', '7abe3a1e2dca012cbf109d3c4017f223bc6ffa9d5491482bf9e68f959c34f150', { cns: '700 1234 5678 9012', ...conselho('CRM', '12345') }),
     p(4, 'Helena Rocha', 'helena.rocha', 'Médico clínico', '225125', 'medico',
-      'c7efb986e6513347', '3ef124adfdf69d37c3a09e542cdcc1d9506fa773fc973bf19e68b0ed4135a86f', conselho('CRM', '23456')),
+      'c7efb986e6513347', '62bcc856e30d6b9d7a27c0fe1f9e03b541b0f62da791e67a8e6e43870d813c85', conselho('CRM', '23456')),
     p(5, 'Joana Lima', 'joana.lima', 'Técnico de enfermagem', '322205', 'enfermagem',
-      '5e310d26affdaea4', 'd1adfad9b67bb96cc028474b740a2d00b4a30d6663e5a08fbcf626c2703a173f', conselho('COREN', '345678-TE')),
+      '5e310d26affdaea4', '5871875a18129c21592e99bfa0b15cf6f298eaa798c43d938a107fb14fc70156', conselho('COREN', '345678-TE')),
     p(6, 'Marta Souza', 'marta.souza', 'Técnico de enfermagem', '322205', 'enfermagem',
-      '86e8da00246bdad5', '7b5937a93901914fa543c3278052f45898b22791bbfec566927ca2def9e6a46a', { status: 'inativo', ...conselho('COREN', '456789-TE') }),
+      '86e8da00246bdad5', '3d292eaa1e02054dac3db6d98763c9306abd81b20163e73cb00132bef07da419', { status: 'inativo', ...conselho('COREN', '456789-TE') }),
   ];
 }
 
@@ -672,23 +672,12 @@ function seedFaixasAih() {
   ];
 }
 
-const Hospital      = armazenar('clinbot:hospital:v1', seedHospital);
-// v2: registro no conselho; quem já tinha cadastro na v1 continua com ele (os exemplos ganham o conselho)
-function seedProfissionaisV2() {
-  const base = seedProfissionais();
-  let v1 = null;
-  try { v1 = JSON.parse(localStorage.getItem('clinbot:profissionais:v1')); } catch (e) { /* sem cadastro antigo */ }
-  if (!Array.isArray(v1)) return base;
-  return v1.map(p => {
-    const b = base.find(x => x.id === p.id && x.login === p.login);
-    return b ? { conselho: b.conselho, conselhoNumero: b.conselhoNumero, conselhoUF: b.conselhoUF, ...p } : p;
-  });
-}
-const Profissionais = colecao('clinbot:profissionais:v2', seedProfissionaisV2);
-// v2: faixas com 12 dígitos; o número da AIH ganha o dígito verificador na geração
-const FaixasAih     = colecao('clinbot:faixas-aih:v2', seedFaixasAih);
+const Hospital      = armazenar('hsus:hospital:v1', seedHospital);
+const Profissionais = colecao('hsus:profissionais:v1', seedProfissionais);
+// faixas com 12 dígitos; o número da AIH ganha o dígito verificador na geração
+const FaixasAih     = colecao('hsus:faixas-aih:v1', seedFaixasAih);
 // números de AIH cancelados, reaproveitados (os mais antigos primeiro) antes de avançar na faixa
-const AihsLiberadas = armazenar('clinbot:aih-liberadas:v1', () => []);
+const AihsLiberadas = armazenar('hsus:aih-liberadas:v1', () => []);
 
 // ===== PROFISSIONAIS E AUTORIA DOS REGISTROS =====
 // "CRM-PA 23456"
@@ -848,7 +837,7 @@ async function hashSenha(senha, salt) {
 const novoSalt = () => [...crypto.getRandomValues(new Uint8Array(8))].map(b => b.toString(16).padStart(2, '0')).join('');
 
 // ===== SESSÃO E PERFIS DE ACESSO =====
-const SESSAO_KEY = 'clinbot:sessao';
+const SESSAO_KEY = 'hsus:sessao';
 
 // páginas que cada perfil pode usar
 const PERFIS = {
@@ -1037,14 +1026,3 @@ function tickClock() {
   document.getElementById('clockTime').textContent = isoTime(now);
   document.getElementById('greeting').textContent  = h < 12 ? 'Bom dia' : h < 18 ? 'Boa tarde' : 'Boa noite';
 }
-
-// as 12 internações finalizadas de teste entram uma vez nos dados já gravados (quem começa do zero já as recebe no exemplo)
-(function incluirFinalizadosEnfermaria() {
-  const FLAG = 'clinbot:seed-finalizados-enfermaria:v1';
-  try { if (localStorage.getItem(FLAG)) return; localStorage.setItem(FLAG, '1'); } catch (e) { return; }
-  const lista = Store.all();
-  let id = Store.nextId(); // depois dos atendimentos já gravados, para não sobrepor nenhum
-  seedFinalizadosEnfermaria().map(autoriaExemplo)
-    .filter(a => !lista.some(x => x.ident?.cns === a.ident.cns))
-    .forEach(a => Store.upsert({ ...a, id: id++ }));
-})();

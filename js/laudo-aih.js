@@ -1,6 +1,6 @@
 // Laudo para Solicitação de Autorização de Internação Hospitalar (AIH) para impressão (ou "Salvar como PDF").
 // Reproduz o formulário oficial em SVG, com as mesmas posições (em pontos, página A4 de 595,28 × 841,89) e fonte do modelo.
-// Usa: clinbot.js e sus/sus.js.
+// Usa: hsus.js e sus/sus.js.
 
 const AIH_FONTES = 'https://cdn.jsdelivr.net/npm/dejavu-fonts-ttf@2.37.3/ttf/';
 const AIH_CINZA = '#808080';   // contorno das caixas

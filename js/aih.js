@@ -1,7 +1,7 @@
 // AIH — Autorização de Internação Hospitalar para impressão (ou "Salvar como PDF").
 // Reproduz o modelo oficial: folha Carta (612 × 792 pt) com 1ª e 2ª via iguais, nas mesmas posições e fontes do modelo.
 // O número da AIH vem da faixa cadastrada (12 dígitos + dígito verificador), gerado antes em "Gerar AIHs".
-// Usa: clinbot.js.
+// Usa: hsus.js.
 
 const VIA2_DESLOCAMENTO = 378; // a 2ª via repete a 1ª, 378 pt abaixo
 

@@ -2,7 +2,7 @@
 // Textos em maiúsculas e sem acento; um campo com espaço vai entre aspas (como o fputcsv do PHP).
 // Ordem das colunas: cns; nome; prontuário; nascimento; sexo; raça; mãe; responsável; código do logradouro; logradouro; cep;
 // ibge do município; (em branco); entrada; saída; cid; procedimento; clínica; caráter; motivo da alta; cpf, cns e cbo do solicitante; aih.
-// Usa: clinbot.js, laudo-aih.js (clinicaAih, solicitanteAih, soDigitos).
+// Usa: hsus.js, laudo-aih.js (clinicaAih, solicitanteAih, soDigitos).
 
 // código DNE do tipo de logradouro (tabela do CADSUS)
 const CODIGO_LOGRADOURO = {
